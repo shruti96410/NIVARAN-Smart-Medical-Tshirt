@@ -1,129 +1,153 @@
 import streamlit as st
-import pandas as pd
 import numpy as np
+import pandas as pd
+import time
 
-# Page config
-st.set_page_config(page_title="NIVARAN Smart Medical T-Shirt", layout="wide")
+# ---------------- LOGIN SYSTEM ----------------
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
 
-# 🔥 Advanced Dark Theme Styling
+def login():
+    st.title("🔐 Nivaran Login")
+
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login"):
+        if username == "shruti96410" and password == "1234":
+            st.session_state.logged_in = True
+            st.success("Login Successful ✅")
+            st.rerun()
+        else:
+            st.error("Invalid Credentials ❌")
+
+if not st.session_state.logged_in:
+    login()
+    st.stop()
+
+# ---------------- PAGE CONFIG ----------------
+st.set_page_config(layout="wide")
+
+# ---------------- CSS ----------------
 st.markdown("""
-    <style>
-    
-    /* Main background */
-    .stApp {
-        background-color: #0E1117;
-        color: white;
-    }
-
-    /* Title */
-    h1 {
-        color: #00F5D4;
-        text-align: center;
-        font-weight: 800;
-    }
-
-    /* Subheaders */
-    h2, h3 {
-        color: #FFFFFF;
-        font-weight: 700;
-    }
-
-    /* Sidebar */
-    section[data-testid="stSidebar"] {
-        background-color: #111827;
-    }
-
-    /* Metric Cards */
-    div[data-testid="stMetric"] {
-        background-color: #1F2937;
-        padding: 20px;
-        border-radius: 12px;
-        text-align: center;
-        border: 1px solid #374151;
-        box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
-    }
-
-    /* Metric Label */
-    div[data-testid="stMetricLabel"] {
-        color: #9CA3AF;
-        font-size: 16px;
-        font-weight: 600;
-    }
-
-    /* Metric Value */
-    div[data-testid="stMetricValue"] {
-        color: #00F5D4;
-        font-size: 32px;
-        font-weight: 900;
-    }
-
-    /* Alerts */
-    .stAlert {
-        font-weight: 700;
-        font-size: 16px;
-    }
-
-    /* Buttons */
-    .stButton>button {
-        background-color: #00F5D4;
-        color: black;
-        font-weight: 700;
-        border-radius: 8px;
-    }
-
-    </style>
+<style>
+.stApp {
+    background-color: #0E1117;
+    color: white;
+}
+.header {
+    font-size: 30px;
+    font-weight: 800;
+    color: #00F5D4;
+}
+.card {
+    background-color: #1F2937;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    transition: 0.3s;
+}
+.card:hover {
+    transform: scale(1.03);
+}
+.card-title {
+    color: #9CA3AF;
+    font-weight: 600;
+}
+.card-value {
+    font-size: 28px;
+    font-weight: 900;
+    color: #00F5D4;
+}
+.section {
+    background-color: #1F2937;
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 20px;
+}
+</style>
 """, unsafe_allow_html=True)
 
-# 🩺 Title
-st.title("🩺 NIVARAN Smart Medical T-Shirt")
-st.markdown("<h3 style='text-align:center;'>Real-Time Health Monitoring Dashboard</h3>", unsafe_allow_html=True)
-
-# 📌 Sidebar
-st.sidebar.header("👤 Patient Details")
-name = st.sidebar.text_input("Enter Patient Name")
-age = st.sidebar.number_input("Enter Age", 1, 100)
-
-st.sidebar.markdown("---")
-st.sidebar.success("System Active ✅")
-
-# 🔄 Simulated Data
-heart_rate = np.random.randint(60, 120)
-temperature = round(np.random.uniform(36.0, 39.0), 2)
-oxygen = np.random.randint(90, 100)
-
-# 📊 Metrics Display
-col1, col2, col3 = st.columns(3)
-
-col1.metric("❤️ Heart Rate (BPM)", heart_rate)
-col2.metric("🌡 Temperature (°C)", temperature)
-col3.metric("🫁 Oxygen Level (%)", oxygen)
-
-# 🚨 Alerts Section
-st.markdown("## 🚨 Health Alerts")
-
-if heart_rate > 100:
-    st.error("⚠️ High Heart Rate Detected!")
-
-if temperature > 37.5:
-    st.warning("⚠️ Fever Detected!")
-
-if oxygen < 94:
-    st.error("⚠️ Low Oxygen Level!")
-
-if heart_rate <= 100 and temperature <= 37.5 and oxygen >= 94:
-    st.success("✅ All Vitals are Normal")
-
-# 📈 Live Chart
-st.markdown("## 📊 Live Health Trends")
-
-chart_data = pd.DataFrame({
-    "Heart Rate": np.random.randint(60, 120, 20),
-    "Temperature": np.random.uniform(36, 39, 20),
-    "Oxygen": np.random.randint(90, 100, 20)
-})
-
-st.line_chart(chart_data)
-
-# 🧾 Footer
+# ---------------- HEADER ----------------
+st.markdown('<div class="header">🩺 Nivaran - Smart Medical Dashboard</div>', unsafe_allow_html=True)
 st.markdown("---")
-st.markdown("<h4 style='text-align:center; color:#9CA3AF;'>Developed for Smart Healthcare Monitoring 💙</h4>", unsafe_allow_html=True)
+
+# ---------------- TABS ----------------
+tab1, tab2, tab3, tab4 = st.tabs(["🏠 Overview", "❤️ Heart Rate", "🌙 Sleep", "🧠 Stress"])
+
+# ---------------- DATA ----------------
+heart_rate = np.random.randint(60, 110)
+sleep_hours = round(np.random.uniform(5, 9), 2)
+stress_level = np.random.randint(1, 10)
+steps = np.random.randint(2000, 8000)
+
+# ---------------- OVERVIEW ----------------
+with tab1:
+    st.subheader("📊 Overview Dashboard")
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    col1.metric("❤️ Heart Rate", f"{heart_rate} BPM")
+    col2.metric("🌙 Sleep", f"{sleep_hours} hrs")
+    col3.metric("🧠 Stress Level", stress_level)
+    col4.metric("🚶 Steps", steps)
+
+    st.markdown("### 📈 Health Trends")
+
+    data = pd.DataFrame({
+        "Heart Rate": np.random.randint(60, 110, 20),
+        "Sleep": np.random.uniform(5, 9, 20),
+        "Stress": np.random.randint(1, 10, 20)
+    })
+
+    st.line_chart(data)
+
+# ---------------- HEART RATE ----------------
+with tab2:
+    st.subheader("❤️ Heart Rate Monitoring")
+
+    st.metric("Current Heart Rate", f"{heart_rate} BPM")
+
+    hr_data = pd.DataFrame({
+        "Heart Rate": np.random.randint(60, 120, 30)
+    })
+
+    st.line_chart(hr_data)
+
+    if heart_rate > 100:
+        st.error("⚠️ High Heart Rate Detected!")
+
+# ---------------- SLEEP ----------------
+with tab3:
+    st.subheader("🌙 Sleep Analysis")
+
+    st.metric("Sleep Duration", f"{sleep_hours} hrs")
+
+    sleep_data = pd.DataFrame({
+        "Sleep Hours": np.random.uniform(4, 9, 30)
+    })
+
+    st.line_chart(sleep_data)
+
+    if sleep_hours < 6:
+        st.warning("⚠️ Poor Sleep Detected!")
+
+# ---------------- STRESS ----------------
+with tab4:
+    st.subheader("🧠 Stress Monitoring")
+
+    st.metric("Stress Level", stress_level)
+
+    stress_data = pd.DataFrame({
+        "Stress": np.random.randint(1, 10, 30)
+    })
+
+    st.line_chart(stress_data)
+
+    if stress_level > 7:
+        st.error("⚠️ High Stress Level!")
+
+# ---------------- LOGOUT ----------------
+if st.sidebar.button("Logout"):
+    st.session_state.logged_in = False
+    st.rerun()
