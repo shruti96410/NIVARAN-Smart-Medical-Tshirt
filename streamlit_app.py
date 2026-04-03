@@ -1,14 +1,13 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import time
 
 # ---------------- LOGIN SYSTEM ----------------
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 def login():
-    st.title("🔐 Nivaran Login")
+    st.markdown("<h1 style='text-align:center; color:#2563EB;'>🔐 Nivaran Login</h1>", unsafe_allow_html=True)
 
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
@@ -28,48 +27,69 @@ if not st.session_state.logged_in:
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(layout="wide")
 
-# ---------------- CSS ----------------
+# ---------------- LIGHT THEME CSS ----------------
 st.markdown("""
 <style>
+
+/* Background */
 .stApp {
-    background-color: #0E1117;
-    color: white;
+    background-color: #F9FAFB;
+    color: #111827;
 }
+
+/* Header */
 .header {
-    font-size: 30px;
-    font-weight: 800;
-    color: #00F5D4;
+    font-size: 32px;
+    font-weight: 900;
+    color: #2563EB;
 }
+
+/* Cards */
 .card {
-    background-color: #1F2937;
+    background-color: white;
     padding: 20px;
     border-radius: 15px;
-    margin-bottom: 15px;
+    border: 1px solid #E5E7EB;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.05);
     transition: 0.3s;
 }
 .card:hover {
-    transform: scale(1.03);
+    transform: scale(1.02);
 }
+
+/* Titles */
 .card-title {
-    color: #9CA3AF;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 700;
+    color: #6B7280;
 }
+
+/* Values */
 .card-value {
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 900;
-    color: #00F5D4;
+    color: #111827;
 }
+
+/* Section */
 .section {
-    background-color: #1F2937;
+    background-color: white;
     padding: 20px;
     border-radius: 15px;
+    border: 1px solid #E5E7EB;
     margin-top: 20px;
 }
+
+/* Alerts */
+.stAlert {
+    font-weight: 700;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
 # ---------------- HEADER ----------------
-st.markdown('<div class="header">🩺 Nivaran - Smart Medical Dashboard</div>', unsafe_allow_html=True)
+st.markdown('<div class="header">🩺 Nivaran Smart Medical Dashboard</div>', unsafe_allow_html=True)
 st.markdown("---")
 
 # ---------------- TABS ----------------
@@ -83,14 +103,37 @@ steps = np.random.randint(2000, 8000)
 
 # ---------------- OVERVIEW ----------------
 with tab1:
-    st.subheader("📊 Overview Dashboard")
+    st.markdown("## 📊 Overview")
 
     col1, col2, col3, col4 = st.columns(4)
 
-    col1.metric("❤️ Heart Rate", f"{heart_rate} BPM")
-    col2.metric("🌙 Sleep", f"{sleep_hours} hrs")
-    col3.metric("🧠 Stress Level", stress_level)
-    col4.metric("🚶 Steps", steps)
+    col1.markdown(f"""
+    <div class="card">
+        <div class="card-title">❤️ Heart Rate</div>
+        <div class="card-value">{heart_rate} BPM</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    col2.markdown(f"""
+    <div class="card">
+        <div class="card-title">🌙 Sleep</div>
+        <div class="card-value">{sleep_hours} hrs</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    col3.markdown(f"""
+    <div class="card">
+        <div class="card-title">🧠 Stress</div>
+        <div class="card-value">{stress_level}</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    col4.markdown(f"""
+    <div class="card">
+        <div class="card-title">🚶 Steps</div>
+        <div class="card-value">{steps}</div>
+    </div>
+    """, unsafe_allow_html=True)
 
     st.markdown("### 📈 Health Trends")
 
@@ -104,7 +147,7 @@ with tab1:
 
 # ---------------- HEART RATE ----------------
 with tab2:
-    st.subheader("❤️ Heart Rate Monitoring")
+    st.markdown("## ❤️ Heart Rate Monitoring")
 
     st.metric("Current Heart Rate", f"{heart_rate} BPM")
 
@@ -119,7 +162,7 @@ with tab2:
 
 # ---------------- SLEEP ----------------
 with tab3:
-    st.subheader("🌙 Sleep Analysis")
+    st.markdown("## 🌙 Sleep Analysis")
 
     st.metric("Sleep Duration", f"{sleep_hours} hrs")
 
@@ -134,7 +177,7 @@ with tab3:
 
 # ---------------- STRESS ----------------
 with tab4:
-    st.subheader("🧠 Stress Monitoring")
+    st.markdown("## 🧠 Stress Monitoring")
 
     st.metric("Stress Level", stress_level)
 
@@ -148,6 +191,6 @@ with tab4:
         st.error("⚠️ High Stress Level!")
 
 # ---------------- LOGOUT ----------------
-if st.sidebar.button("Logout"):
+if st.sidebar.button("🚪 Logout"):
     st.session_state.logged_in = False
     st.rerun()
