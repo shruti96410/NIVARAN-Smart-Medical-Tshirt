@@ -9,7 +9,7 @@ Objectives
 ● Fuse models to achieve >90% accuracy in predictions.
 ● Integrate IoT for real-time monitoring and emergency alerts.
 ● Deliver a prototype that is comfortable, washable, and affordable.
-6. Methodology
+Methodology
 ➢ Datasets Used:
 ○ wearable_sensor_data.csv → Stress & vitals.
 ○ archive.zip → Accelerometer readings for fall detection.
